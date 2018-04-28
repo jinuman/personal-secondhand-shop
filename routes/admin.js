@@ -9,7 +9,8 @@ router.get('/', function (req, res) {
 
 // 제품 등록 create product
 router.get('/products/write', (req, res) => {
-    res.render('admin/form')
+    res.render('admin/form', {product: ""})
+    // edit에서 form의 value값 세팅을 위해 product를 사용하였기 때문에 여기서 빈 변수 넣어줌
 });
 // DB 저장 saving
 router.post('/products/write', (req, res) => {
@@ -36,11 +37,30 @@ router.get('/products', (req, res) => {
 router.get('/products/detail/:productId', (req, res) => {
     // url에서 변수 값 받아올 땐 req.params.id
     ProductsModel.findOne({productId: req.params.productId}, (err, product) => {
-        res.render('admin/productDetail', {productDetail: product})
+        res.render('admin/productDetail', {productDetail: product});
     });
 });
 
-
-
+// 등록한 제품 수정하는 페이지
+router.get('/products/edit/:productId', (req, res) => {
+    // 기존 form에 value 추가해서 저장된 상태에서 변경할 수 있게 setting
+    ProductsModel.findOne({productId: req.params.productId}, (err, product) => {
+        res.render('admin/form', {product: product});
+    });
+});
+// edit -> DB update
+router.post('/products/edit/:productId', (req, res) => {
+    // 스키마와 일치하게 수정할 변수들 setting
+    let temp = {
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description
+    };
+    // update 파라미터 : 조회조건, 바뀔 값들(schema), callback
+    ProductsModel.update({productId: req.params.productId}, {$set: temp}, (err) => {
+        // 수정 후 본래 보던 상세 페이지로 이동
+        res.redirect('/admin/products/detail/' + req.params.productId);
+    });
+});
 
 module.exports = router;

@@ -5,15 +5,18 @@
     <table class="table table-bordered">
         <tr>
             <th>제품명</th>
-            <td><input class="form-control" type="text" name="name" /></td>
+            <td><input class="form-control" type="text" name="name"
+                       value="<%=product.name%>"/></td>
         </tr>
         <tr>
             <th>가격</th>
-            <td><input class="form-control" type="text" name="price" /></td>
+            <td><input class="form-control" type="text" name="price"
+                       value="<%=product.price%>"/></td>
         </tr>
         <tr>
             <th>설명</th>
-            <td><input class="form-control input-lg" type="text" name="description" /></td>
+            <td><input class="form-control input-lg" type="text" name="description"
+                       value="<%=product.description%>"/></td>
         </tr>
     </table>
     <button class="btn btn-primary">작성하기</button>
