@@ -1,0 +1,31 @@
+<% include ../header.ejs %>
+
+<!-- 제품 목록 페이지 -->
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>제목</th>
+        <th>작성일</th>
+        <th>삭제</th>
+    </tr>
+    <% allProducts.forEach((product) => { %>
+    <tr>
+        <td>
+            <a href="#">
+                <%=product.name%>
+            </a>
+        </td>
+        <td>
+            <%=product.created_at%>
+        </td>
+        <td>
+            <a href="#" class="btn btn-danger"
+               onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+        </td>
+    </tr>
+    <%});%>
+</table>
+
+<a href="#" class="btn btn-default">작성하기</a>
+
+<% include ../footer.ejs %>

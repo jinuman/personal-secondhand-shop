@@ -28,6 +28,11 @@ ProductsSchema.virtual('getDate').get(() => {   // getDate 필드가 생긴다.
 
 // model: Collection name, field: primary key, startAt: 1부터 시작
 // primary key will increment by 1 for each new record.
-ProductsSchema.plugin(autoIncrement.plugin, {model: 'products', field: 'id', startAt: 1});
+ProductsSchema.plugin(autoIncrement.plugin, {
+    model: 'products',
+    field: 'productId',
+    startAt: 1,
+    incrementBy: 1
+});
 module.exports = mongoose.model('products', ProductsSchema);
 

@@ -19,7 +19,19 @@ router.post('/products/write', (req, res) => {
         description: req.body.description
     });
     product.save((err) => {
-        res.redirect('#')
+        res.redirect('/admin/products')  // 작성하면 목록으로 이동
     });
 });
+
+// 제품 목록
+router.get('/products', (req, res) => {
+    ProductsModel.find((err, products) => {
+        res.render('admin/products',
+            {allProducts: products})    // view variable: DB model
+            // pass a local variable to the view
+    });
+});
+
+
+
 module.exports = router;
