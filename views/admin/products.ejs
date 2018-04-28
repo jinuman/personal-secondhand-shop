@@ -8,24 +8,28 @@
         <th>작성일</th>
         <th>삭제</th>
     </tr>
-    <% allProducts.forEach((product) => { %>
+    <% productList.forEach((product) => { %>
     <tr>
         <td>
-            <a href="#">
+            <a href="/admin/products/detail/<%=product.productId%>">
                 <%=product.name%>
             </a>
         </td>
         <td>
+            <!-- virtual model -->
+            <%=product.getDate.year%> -
+            <%=product.getDate.month%> -
+            <%=product.getDate.day%>
             <%=product.created_at%>
         </td>
         <td>
-            <a href="#" class="btn btn-danger"
+            <a href="/admin/products/delete/<%=product.productId%>" class="btn btn-danger"
                onclick="return confirm('삭제하시겠습니까?')">삭제</a>
         </td>
     </tr>
     <%});%>
 </table>
 
-<a href="#" class="btn btn-default">작성하기</a>
+<a href="/admin/products/write" class="btn btn-default">작성하기</a>
 
 <% include ../footer.ejs %>
