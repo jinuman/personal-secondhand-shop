@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const ProductsModel = require('../models/ProductsModel');
 
 // admin page
 router.get('/', function (req, res) {
