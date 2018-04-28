@@ -17,7 +17,7 @@ const ProductsSchema = new Schema({
 // virtual 변수는 호출되면 실행하는 함수
 // set 은 변수의 값을 바꾸거나 셋팅하면 호출
 // getDate 변수를 호출하는 순간 년, 월, 일이 찍힌다.
-ProductsSchema.virtual('getDate').get(() => {   // getDate 필드가 생긴다.
+ProductsSchema.virtual('getDate').get(function() {   // getDate 필드가 생긴다.
     let date = new Date(this.created_at);
     return {
         year: date.getFullYear(),
