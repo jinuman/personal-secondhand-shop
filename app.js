@@ -1,32 +1,32 @@
-let express = require('express');
-let path = require('path');
-let logger = require('morgan');
-let bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
 /**
  * DB setting
  * */
 // mongodb connect
-let mongoose = require('mongoose');
-let autoIncrement = require('mongoose-auto-increment');
+const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 mongoose.Promise = global.Promise;
 
-// DB collection: create secondhandshop collection and connect
-let databaseUrl = 'mongodb://localhost:27017/secondhandshop';
-let connect = mongoose.connect(databaseUrl,
+// Database: create secondhandshop database and connect
+const databaseUrl = 'mongodb://localhost:27017/secondhandshop';
+const connect = mongoose.connect(databaseUrl,
     { useMongoClient: true }
 );
 // automatically increase primary key
 autoIncrement.initialize(connect);
 
-let db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error);
-db.once('open', function () {
+db.once('open', () => {
     console.log('mongodb connection success!');
 });
 
-let app = express();
-let port = 3000;        // port number
+const app = express();
+const port = 3000;        // port number
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,17 +39,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Router
-let adminRouter = require('./routes/admin');
+const adminRouter = require('./routes/admin');
 
 // Routing
 app.use('/admin', adminRouter);
 
-app.get('/', function (req, res) {
-    res.send('It is working');
+app.get('/', (req, res) => {
+    res.send('Happy jinuman');
 });
 
 // connect to server port
-app.listen(port, function () {
+app.listen(port, () => {
     console.log('Express Server listening on port: ' + port + ' is now running.');
 });
 
