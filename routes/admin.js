@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
     res.send('admin page success');
 });
 
-// 제품 등록 create product
+// 제품 등록 write(create) product
 router.get('/products/write', (req, res) => {
     res.render('admin/form', {product: ""})
     // edit에서 form의 value값 세팅을 위해 product를 사용하였기 때문에 여기서 빈 변수 넣어줌
@@ -29,7 +29,7 @@ router.get('/products', (req, res) => {
     ProductsModel.find((err, products) => {
         res.render('admin/products',
             {productList: products})    // view variable: DB model
-            // pass a local variable to the view
+        // pass a local variable to the view
     });
 });
 
@@ -51,15 +51,22 @@ router.get('/products/edit/:productId', (req, res) => {
 // edit -> DB update
 router.post('/products/edit/:productId', (req, res) => {
     // 스키마와 일치하게 수정할 변수들 setting
-    let temp = {
+    let newValues = {
         name: req.body.name,
         price: req.body.price,
         description: req.body.description
     };
     // update 파라미터 : 조회조건, 바뀔 값들(schema), callback
-    ProductsModel.update({productId: req.params.productId}, {$set: temp}, (err) => {
+    ProductsModel.update({productId: req.params.productId}, {$set: newValues}, (err) => {
         // 수정 후 본래 보던 상세 페이지로 이동
         res.redirect('/admin/products/detail/' + req.params.productId);
+    });
+});
+
+// 제품 삭제
+router.get('/products/delete/:productId', (req, res) => {
+    ProductsModel.remove({productId: req.params.productId}, (err) => {
+        res.redirect('/admin/products')
     });
 });
 
