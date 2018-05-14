@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ProductsModel = require('../models/ProductsModel');
+const CommentsModel = require('../models/CommentsModel');
 
 // admin page
 router.get('/', function (req, res) {
@@ -8,11 +9,13 @@ router.get('/', function (req, res) {
 });
 
 // 제품 등록 write(create) product
+// Get(HTTP method) is used to request data from specified resource
 router.get('/products/write', (req, res) => {
     res.render('admin/form', {product: ""})
-    // edit에서 form의 value값 세팅을 위해 product를 사용하였기 때문에 여기서 빈 변수 넣어줌
+    // edit에서 form의 value값 세팅을 위해 product를 사용하였기 때문에 여기서 빈 변수 넣어주어서 에러 방지
 });
-// DB 저장 saving
+// DB 저장 = save
+// Post(HTTP method) is used to send data to a server to create/update a resource
 router.post('/products/write', (req, res) => {
     let product = new ProductsModel({
         name: req.body.name,        // field: form_name
