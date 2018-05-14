@@ -30,9 +30,10 @@ router.post('/products/write', (req, res) => {
 // 제품 목록 product list
 router.get('/products', (req, res) => {
     ProductsModel.find((err, products) => {
+        // res.json(products);
         res.render('admin/products',
-            {productList: products})    // view variable: DB model
-        // pass a local variable to the view
+            {productList: products})    // view variable: parameter
+            // pass a local variable to the view
     });
 });
 

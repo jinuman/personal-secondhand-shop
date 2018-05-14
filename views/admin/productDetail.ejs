@@ -1,28 +1,48 @@
 <% include ../header.ejs %>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <%=productDetail.name%>
-            </div>
-            <div class="panel-body">
-                <div style="padding-bottom: 10px">
-                    작성일 :
-                        <!--virtual model-->
-                        <%=productDetail.getDate.year%> -
-                        <%=productDetail.getDate.month%> -
-                        <%=productDetail.getDate.day%>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <%= productDetail.name %>
+    </div>
+    <div class="panel-body">
+        <div style="padding-bottom: 10px">
+            작성일 :
+            <!--virtual model-->
+            <%= productDetail.getDate.year %> -
+            <%= productDetail.getDate.month %> -
+            <%= productDetail.getDate.day %>
 
-                </div>
-                <div style="padding-bottom: 50px">
-                    price : <%=productDetail.price%>
-                </div>
-                <%=productDetail.description%>
-
-            </div>
         </div>
+        <div style="padding-bottom: 50px">
+            price : <%= productDetail.price %>
+        </div>
+        <%= productDetail.description %>
 
-        <a href="/admin/products" class="btn btn-default">목록으로</a>
-        <a href="/admin/products/edit/<%=productDetail.productId%>" class="btn btn-primary">수정</a>
+        <!-- 댓글 부분 -->
+        <div>
+            댓글작성하기
+            <form action="" id="commentForm" method="post">
+                <input type="hidden" name="product_id" value="<% productDetail.productId %>">
+                <textarea name="content" class="form-control"></textarea>
+                <button class="btn btn-primary" style="margin-top: 10px">댓글작성</button>
+            </form>
+        </div>
+        <!-- 댓글 부분 -->
 
+    </div>
+</div>
+
+<a href="/admin/products" class="btn btn-default">목록으로</a>
+<a href="/admin/products/edit/<%= productDetail.productId %>" class="btn btn-primary">수정</a>
+
+<script>
+    $(document).ready(function(){
+        $('#commentForm').submit(function(){
+            let $contentVal = $(this).children('textarea[name="content"]').val();
+            alert($contentVal);
+            return false;
+        });
+    });
+</script>
 
 
 <% include ../footer.ejs %>
