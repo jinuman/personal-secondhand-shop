@@ -17,7 +17,7 @@ const CommentsSchema = new Schema({
 // primary key will increment by 1 for each new record.
 CommentsSchema.plugin(autoIncrement.plugin, {
     model: 'comments',
-    field: 'commentId',
+    field: 'id',
     startAt: 1
 });
 

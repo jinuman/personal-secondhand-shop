@@ -30,7 +30,7 @@ ProductsSchema.virtual('getDate').get(function() {   // getDate 필드가 생긴
 // primary key will increment by 1 for each new record.
 ProductsSchema.plugin(autoIncrement.plugin, {
     model: 'products',
-    field: 'productId',
+    field: 'id',
     startAt: 1,
     incrementBy: 1
 });

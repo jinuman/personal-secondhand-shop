@@ -15,13 +15,24 @@
         <div style="padding-bottom: 50px">
             price : <%= productDetail.price %>
         </div>
-        <%= productDetail.description %>
-
+        <div align="center">
+            <h3><%= productDetail.description %></h3>
+        </div>
+        <hr>
         <!-- 댓글 부분 -->
+        <div id="comment_area">
+            <% comments.forEach(function(comment){ %>
+            <div>
+                <%= comment.content %>
+                ( <a class="comment_delete" comment_id="<%=comment.id%>">삭제</a> )
+            </div>
+            <% }); %>
+        </div>
+
         <div>
             댓글작성하기
             <form action="" id="commentForm" method="post">
-                <input type="hidden" name="product_id" value="<% productDetail.productId %>">
+                <input type="hidden" name="product_id" value="<%= productDetail.id %>">
                 <textarea name="content" class="form-control"></textarea>
                 <button class="btn btn-primary" style="margin-top: 10px">댓글작성</button>
             </form>
@@ -32,15 +43,55 @@
 </div>
 
 <a href="/admin/products" class="btn btn-default">목록으로</a>
-<a href="/admin/products/edit/<%= productDetail.productId %>" class="btn btn-primary">수정</a>
+<a href="/admin/products/edit/<%= productDetail.id %>" class="btn btn-primary">수정</a>
 
 <script>
-    $(document).ready(function(){
-        $('#commentForm').submit(function(){
-            let $contentVal = $(this).children('textarea[name="content"]').val();
-            alert($contentVal);
+    // 댓글 작성
+    $(document).ready(function () {
+        $('#commentForm').submit(function () {
+            let $contentVal =
+                $(this).children('textarea[name=content]').val();
+            // alert($contentVal);
+            if ($contentVal) {
+                $.ajax({
+                    url: '/admin/products/ajax_comment/insert',
+                    type: 'POST',
+                    data: $(this).serialize(),  // 서버로 데이터를 전송
+                    // serialize() :form 태그 안의 value 값들을 쿼리스트링으로 변환
+                }).done(function (args) {
+                    if (args.message === "success") {
+                        $('#comment_area').append(
+                            '<div>' + args.content +
+                            '( <a class="comment_delete" comment_id=' + args.id + '>삭제</a> )' +
+                            '</div>'
+                        );
+                        $('#commentForm textarea[name=content]').val("");
+                        // 입력 필드 비우기
+                    }
+                }).fail(function (args) {
+                    console.log(args);
+                });
+            } else {
+                alert("댓글 내용을 입력해주세요..");
+            }
             return false;
         });
+    });
+    // 댓글 삭제
+    $(document).on('click', '.comment_delete', function () {
+        let $self = $(this);
+        if (confirm('해당 댓글을 삭제하시겠습니까?')) {    // 예 눌렀을 시만 진행
+            $.ajax({
+                url: '/admin/products/ajax_comment/delete',
+                type: 'POST',
+                data: {comment_id: $self.attr('comment_id')}
+            }).done(function () {
+                $self.parent().remove();
+                alert("삭제가 완료되었습니다.");
+            }).fail(function (args) {
+                console.log(args);
+            });
+        }
     });
 </script>
 
