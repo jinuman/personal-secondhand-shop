@@ -22,10 +22,15 @@ router.post('/products/write', (req, res) => {
         price: req.body.price,
         description: req.body.description
     });
-    product.save((err) => {
-        res.redirect('/admin/products')  // 작성하면 목록으로 이동
-        console.log(err);
-    });
+    let validationError = product.validateSync();
+    if (validationError) {
+        res.json(validationError);
+    } else {
+        product.save((err) => {
+            res.redirect('/admin/products');  // 작성하면 목록으로 이동
+            console.log(err);
+        });
+    }
 });
 
 // 제품 목록 product list
