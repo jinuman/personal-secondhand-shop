@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 /**
  * DB setting
@@ -14,7 +15,7 @@ mongoose.Promise = global.Promise;
 // Database: create secondhandshop database and connect
 const databaseUrl = 'mongodb://localhost:27017/secondhandshop';
 const connect = mongoose.connect(databaseUrl,
-    { useMongoClient: true }
+    {useMongoClient: true}
 );
 // automatically increase primary key
 autoIncrement.initialize(connect);
@@ -35,8 +36,9 @@ app.set('view engine', 'ejs');
 // middleware setting
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser());
 
 // Router
 const adminRouter = require('./routes/admin');
@@ -52,4 +54,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log('Express Server listening on port: ' + port + ' is now running.');
 });
-

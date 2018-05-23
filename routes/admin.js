@@ -3,6 +3,10 @@ const router = express.Router();
 const ProductsModel = require('../models/ProductsModel');
 const CommentsModel = require('../models/CommentsModel');
 
+// csrf 셋팅
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
+
 // admin page
 router.get('/', function (req, res) {
     res.send('admin page success');
@@ -11,12 +15,13 @@ router.get('/', function (req, res) {
 // 제품 등록 write(create) product
 // Get(HTTP method) is used to request data from specified resource
 router.get('/products/write', (req, res) => {
-    res.render('admin/form', {product: ""})
+    res.render('admin/form', {product: "", csrfToken: req.csrfToken()});
+    // Token(csrfToken)을 view(admin/form)로 내보내준다.
     // edit에서 form의 value값 세팅을 위해 product를 사용하였기 때문에 여기서 빈 변수 넣어주어서 에러 방지
 });
 // DB save
 // Post(HTTP method) is used to send data to a server to create/update a resource
-router.post('/products/write', (req, res) => {
+router.post('/products/write', csrfProtection, (req, res) => {
     let product = new ProductsModel({
         name: req.body.name,        // field: form_name
         price: req.body.price,
@@ -55,14 +60,14 @@ router.get('/products/detail/:id', (req, res) => {
 });
 
 // 등록한 제품 수정하는 페이지
-router.get('/products/edit/:id', (req, res) => {
+router.get('/products/edit/:id', csrfProtection, (req, res) => {
     // 기존 form에 value 추가해서 저장된 상태에서 변경할 수 있게 setting
     ProductsModel.findOne({id: req.params.id}, (err, product) => {
-        res.render('admin/form', {product: product});
+        res.render('admin/form', {product: product, csrfToken : req.csrfToken()});
     });
 });
 // edit -> DB update
-router.post('/products/edit/:id', (req, res) => {
+router.post('/products/edit/:id', csrfProtection, (req, res) => {
     // 스키마와 일치하게 수정할 변수들 setting
     let newValues = {
         name: req.body.name,
