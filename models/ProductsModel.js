@@ -8,6 +8,7 @@ const ProductsSchema = new Schema({
         type: String,
         required: [true, "제품명을 입력해주세요."] // Validation Check
     },
+    thumbnail : String,     // image file name
     price: Number,          // 제품 가격
     description: String,    // 제품 설명
     created_at: {           // 작성한 날
